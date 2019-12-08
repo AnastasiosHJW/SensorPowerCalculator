@@ -12,9 +12,15 @@ import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.Button;
 import javax.swing.JTextField;
@@ -238,9 +244,78 @@ public class MainView {
 		
 		JMenuItem mntmImport = new JMenuItem("Import");
 		mnFile.add(mntmImport);
+		mntmImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				JFileChooser chooser = new JFileChooser();
+				int returnValue = chooser.showOpenDialog(frame);
+				
+				if (returnValue == JFileChooser.APPROVE_OPTION)
+				{
+					File file = chooser.getSelectedFile();
+					FileReader reader;
+					
+					try 
+					{
+						reader = new FileReader(chooser.getSelectedFile());
+						int i;
+						
+						ArrayList<Character> charList = new ArrayList<Character>();
+						while((i=reader.read()) != -1)
+						{
+							charList.add((char) i);
+						}
+						char[] charArray = new char[charList.size()];
+						for (int j=0;j<charList.size();j++)
+						{
+							charArray[j] = (char) charList.get(j);
+						}
+						
+						String deviceInfo = String.valueOf(charArray);
+						System.out.println(deviceInfo);
+						device = new Device(deviceInfo);
+					}
+					catch (IOException e1)
+					{
+						e1.printStackTrace();
+					}
+					refresh();
+				}
+			}
+			
+			
+		});
 		
 		JMenuItem mntmExport = new JMenuItem("Export");
 		mnFile.add(mntmExport);
+		mntmExport.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				JFileChooser chooser = new JFileChooser();
+				int returnValue = chooser.showSaveDialog(frame);
+				
+				if (returnValue == JFileChooser.APPROVE_OPTION)
+				{
+					File file = chooser.getSelectedFile();
+					FileWriter writer;
+					try {
+						writer = new FileWriter(file);
+						writer.write(device.getDeviceInfo());
+						writer.flush();
+						writer.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					
+				}
+				
+				
+			}
+			
+		});
 		
 		
 		

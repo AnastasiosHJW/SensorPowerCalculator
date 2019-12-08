@@ -10,12 +10,12 @@ public class Device {
 	}
 	
 	public Device(String deviceInfo)
-	{
+	{	
 		sensorList = new ArrayList<Sensor>();
 		String[] splitInfo = deviceInfo.split("\n");
 		for (int i=0;i< splitInfo.length; i++)
 		{
-			String[] sensorInfo = splitInfo[i].split(" ");
+			String[] sensorInfo = splitInfo[i].split(" # ");
 			sensorList.add(new Sensor(sensorInfo[0], Long.parseLong(sensorInfo[1]), Integer.parseInt(sensorInfo[2]), 
 										Integer.parseInt(sensorInfo[3]), Double.parseDouble(sensorInfo[4])));
 		}
@@ -95,8 +95,8 @@ public class Device {
 		for (int i=0;i<sensorList.size();i++)
 		{
 			Sensor sensor = sensorList.get(i);
-			info = sensor.getName() + " " + sensor.getDatarate() + " " + sensor.getMinResolution()
-					+ " " + sensor.getMaxResolution() + " " + sensor.getADCPowerConsumption();
+			info = sensor.getName() + " # " + sensor.getDatarate() + " # " + sensor.getMinResolution()
+					+ " # " + sensor.getMaxResolution() + " # " + sensor.getADCPowerConsumption();
 			deviceInfo += info + " \n";
 		}
 		
